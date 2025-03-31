@@ -3,22 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <title>Форма регистрации</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: "Roboto", sans-serif;
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
         }
         .form-container {
             background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
+            padding: 50px;
+            border-radius: 3%;
+            margin: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 500px;
@@ -47,10 +50,20 @@
             border: 1px solid #ccc;
             border-radius: 4px;
             font-size: 16px;
+            transition: all 0.2s ease;
+        }
+        .form-group input[type="text"]:focus,
+        .form-group input[type="tel"]:focus,
+        .form-group input[type="email"]:focus,
+        .form-group input[type="date"]:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: 0;
+            border-color: #4A89AC;
         }
         .form-group textarea {
             resize: vertical;
-            height: 100px;
+            height: 200px;
         }
         .form-group .radio-group {
             display: flex;
@@ -69,7 +82,7 @@
         .form-group button {
             width: 100%;
             padding: 10px;
-            background-color: #28a745;
+            background-color: #4A89AC;
             color: #fff;
             border: none;
             border-radius: 4px;
@@ -77,40 +90,53 @@
             cursor: pointer;
         }
         .form-group button:hover {
-            background-color: #218838;
+            background-color: #325f77;
+        }
+        .agreement-label {
+            display: inline !important;
+            cursor: pointer;
+        }
+        .checkbox-group {
+            cursor: pointer;
+        }
+        .error-message {
+            color: #ca3b3b;
+        }
+        .sent-message {
+            color: #38c938;
         }
     </style>
 </head>
 <body>
     <div class="form-container">
         <h2>Форма регистрации</h2>
-        <form action="#" method="post">
+        <form action="/submit" method="POST">
             <div class="form-group">
                 <label for="fullname">ФИО:</label>
-                <input type="text" id="fullname" name="fullname" required>
+                <input type="text" id="fio" name="fio" value="{{.Form.FIO}}">
             </div>
             <div class="form-group">
                 <label for="phone">Телефон:</label>
-                <input type="tel" id="phone" name="phone" required>
+                <input type="tel" id="phone" name="phone" value="{{.Form.Phone}}">
             </div>
             <div class="form-group">
                 <label for="email">E-mail:</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email" value="{{.Form.Email}}">
             </div>
             <div class="form-group">
-                <label for="birthdate">Дата рождения:</label>
-                <input type="date" id="birthdate" name="birthdate" required>
+                <label for="birthday">Дата рождения:</label>
+                <input type="date" id="birthday" name="birthday">
             </div>
             <div class="form-group">
                 <label>Пол:</label>
                 <div class="radio-group">
-                    <label><input type="radio" name="gender" value="male" required> Мужской</label>
+                    <label><input type="radio" name="gender" value="male"> Мужской</label>
                     <label><input type="radio" name="gender" value="female"> Женский</label>
                 </div>
             </div>
             <div class="form-group">
                 <label for="language">Любимый язык программирования:</label>
-                <select id="language" name="language[]" multiple required>
+                <select id="language" name="language[]" multiple>
                     <option value="Pascal">Pascal</option>
                     <option value="C">C</option>
                     <option value="C++">C++</option>
@@ -126,15 +152,25 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="bio">Биография:</label>
-                <textarea id="bio" name="bio" required></textarea>
+                <label for="biography">Биография:</label>
+                <textarea id="biography" name="biography" value="{{.Form.Biography}}"></textarea>
             </div>
             <div class="form-group checkbox-group">
-                <input type="checkbox" id="agreement" name="agreement" required>
-                <label for="agreement">С контрактом ознакомлен(а)</label>
+                <input type="checkbox" id="agreement" name="contract_accepted">
+                <label class="agreement-label" for="agreement">С контрактом ознакомлен(а)</label>
             </div>
+            {{if .Error}}
+            <div class="error-message">
+                {{.Error}}
+            </div>
+            {{end}}
+            {{if .Sent}}
+            <div class="sent-message">
+                form submitted successfully
+            </div>
+            {{end}}
             <div class="form-group">
-                <button type="submit">Сохранить</button>
+                <button type="submit">Отправить</button>
             </div>
         </form>
     </div>
