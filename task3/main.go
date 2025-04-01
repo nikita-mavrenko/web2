@@ -194,7 +194,6 @@ func (f *Form) insertToDB() error {
 		return err
 	}
 
-	// 1. Вставляем основную информацию о пользователе
 	ps, err := tx.Prepare(
 		`INSERT INTO users (fio, phone, email, birth_date, gender, biography) 
         VALUES (?, ?, ?, ?, ?, ?, ?)
