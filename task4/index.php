@@ -106,23 +106,23 @@ try {
   ]);
 
   $stmt = $db->prepare("
-    INSERT INTO application (fio, phone, email, birth_date, gender, bio, agree)
-    VALUES (:fio, :phone, :email, :birth_date, :gender, :bio, 1)
+    INSERT INTO users (fio, phone, email, dob, gender, bio)
+    VALUES (:fio, :phone, :email, :dob, :gender, :bio)
   ");
   $stmt->execute([
     'fio' => $_POST['fio'],
     'phone' => $_POST['phone'],
     'email' => $_POST['email'],
-    'birth_date' => $_POST['birth_date'],
+    'dob' => $_POST['birth_date'],
     'gender' => $_POST['gender'],
     'bio' => $_POST['bio'] ?? ''
   ]);
 
-  $app_id = $db->lastInsertId();
+  $user_id = $db->lastInsertId();
 
-  $stmt = $db->prepare("INSERT INTO application_languages (app_id, lang_id) VALUES (?, ?)");
+  $stmt = $db->prepare("INSERT INTO users_languages (user_id, lang_id) VALUES (?, ?)");
   foreach ($_POST['languages'] as $lang_id) {
-    $stmt->execute([$app_id, $lang_id]);
+    $stmt->execute([$user_id, $lang_id]);
   }
 
 } catch (PDOException $e) {
